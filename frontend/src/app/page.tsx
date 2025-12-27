@@ -11,6 +11,7 @@ import Chat from "./pages/chatbot/chat";
 import { motion } from 'framer-motion';
 import InspireSection from './component/ui/InspireSection';
 import RoomsSection from './component/ui/roomsSection';
+import ReviewSection from './component/ui/reviewSection';
 
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -63,6 +64,10 @@ export default function Home() {
 
         <section id="rooms" className="scroll-mt-24">
           <RoomsSection />
+        </section>
+
+        <section id="reviews" className="scroll-mt-24">
+          <ReviewSection />
         </section>
         
         <section id="explore" className="scroll-mt-24">
