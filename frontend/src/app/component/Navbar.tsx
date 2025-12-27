@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Home, Menu, X } from 'lucide-react';
 import {
   createNavItems,
@@ -10,15 +11,12 @@ import {
   type NavItem,
   type SectionName
 } from '../constent/Navitem';
-import LoginDrawer from './ui/LoginDrawer';
-import SignupDrawer from './ui/SignupDrawer';
 
 const Navbar: React.FC = () => {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<SectionName>("home");
   const [scrolled, setScrolled] = useState<boolean>(false);
-  const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
-  const [isSignupOpen, setIsSignupOpen] = useState<boolean>(false);
 
   const navItems: NavItem[] = createNavItems(activeSection);
 
@@ -98,27 +96,11 @@ const Navbar: React.FC = () => {
 
   const handleAuthClick = (authType: 'login' | 'signup'): void => {
     if (authType === 'login') {
-      setIsLoginOpen(true);
+      router.push('/pages/Login');
     } else {
-      setIsSignupOpen(true);
+      router.push('/pages/Signup');
     }
     setIsMenuOpen(false);
-  };
-
-  const handleCloseLogin = () => {
-    setIsLoginOpen(false);
-  };
-
-  const handleCloseSignup = () => {
-    setIsSignupOpen(false);
-  };
-
-  const handleSwitchToSignup = () => {
-    setIsSignupOpen(true);
-  };
-
-  const handleSwitchToLogin = () => {
-    setIsLoginOpen(true);
   };
 
   return (
@@ -234,20 +216,6 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Login Drawer Modal */}
-      <LoginDrawer
-        isOpen={isLoginOpen}
-        onClose={handleCloseLogin}
-        onSwitchToSignup={handleSwitchToSignup}
-      />
-
-      {/* Signup Drawer Modal */}
-      <SignupDrawer
-        isOpen={isSignupOpen}
-        onClose={handleCloseSignup}
-        onSwitchToLogin={handleSwitchToLogin}
-      />
     </nav>
   );
 };
