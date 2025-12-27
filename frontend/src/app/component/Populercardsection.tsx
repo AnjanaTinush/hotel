@@ -1,361 +1,134 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { MapPin, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { MapPin, ChevronLeft, ChevronRight, Heart, ArrowRight } from "lucide-react";
 
-// DirectionAwareHover Component
-const DirectionAwareHover = ({ imageUrl, children, className = "", onHoverChange }) => {
-  const ref = useRef(null);
-  const [direction, setDirection] = useState("left");
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = (event) => {
-    if (!ref.current) return;
-    setIsHovered(true);
-    onHoverChange && onHoverChange(true); // Notify parent about hover
-    
-    const direction = getDirection(event, ref.current);
-    switch (direction) {
-      case 0: setDirection("top"); break;
-      case 1: setDirection("right"); break;
-      case 2: setDirection("bottom"); break;
-      case 3: setDirection("left"); break;
-      default: setDirection("left"); break;
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    onHoverChange && onHoverChange(false); // Notify parent about hover end
-  };
-
-  const getDirection = (ev, obj) => {
-    const { width: w, height: h, left, top } = obj.getBoundingClientRect();
-    const x = ev.clientX - left - (w / 2) * (w > h ? h / w : 1);
-    const y = ev.clientY - top - (h / 2) * (h > w ? w / h : 1);
-    const d = Math.round(Math.atan2(y, x) / 1.57079633 + 5) % 4;
-    return d;
-  };
-
-  const getTransformStyle = () => {
-  if (!isHovered) return { transform: 'scale(1)', transition: 'all 0.6s ease' };
-  
-  switch (direction) {
-    case "top": return { transform: 'translateY(8px) scale(1.05)', transition: 'all 0.6s ease' };
-    case "bottom": return { transform: 'translateY(-8px) scale(1.05)', transition: 'all 0.6s ease' };
-    case "left": return { transform: 'translateX(8px) scale(1.05)', transition: 'all 0.6s ease' };
-    case "right": return { transform: 'translateX(-8px) scale(1.05)', transition: 'all 0.6s ease' };
-    default: return { transform: 'scale(1.05)', transition: 'all 0.6s ease' };
-  }
-};
-
-const getTextStyle = () => {
-  if (!isHovered) return { opacity: 0, transform: 'translateY(20px)', transition: 'all 0.6s ease' };
-  
-  switch (direction) {
-    case "top": return { opacity: 1, transform: 'translateY(-10px)', transition: 'all 0.6s ease' };
-    case "bottom": return { opacity: 1, transform: 'translateY(10px)', transition: 'all 0.6s ease' };
-    case "left": return { opacity: 1, transform: 'translateX(-10px)', transition: 'all 0.6s ease' };
-    case "right": return { opacity: 1, transform: 'translateX(10px)', transition: 'all 0.6s ease' };
-    default: return { opacity: 1, transform: 'translateY(0)', transition: 'all 0.6s ease' };
-  }
-};
-
-
-  return (
-    <div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      ref={ref}
-      className={`relative h-80 w-full bg-transparent rounded-xl overflow-hidden group cursor-pointer ${className}`}
-    >
-      <div className="relative h-full w-full">
-        {isHovered && (
-          <div className="absolute inset-0 w-full h-full bg-black/40 z-10 transition-opacity duration-300" />
-        )}
-        <div className="h-full w-full relative bg-gray-50" style={getTransformStyle()}>
-          <img
-            alt="place"
-            className="h-full w-full object-cover"
-            src={imageUrl}
-          />
-        </div>
-        <div 
-          className="absolute bottom-6 left-6 z-40 text-white"
-          style={getTextStyle()}
-        >
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function DirectionAwareHoverDemo() {
-  // Initialize all state variables with default values
-  const [translateX, setTranslateX] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [speed, setSpeed] = useState(1);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isImageHovered, setIsImageHovered] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  
-  const animationRef = useRef(null);
-  const startTimeRef = useRef(Date.now());
-  const totalElapsedRef = useRef(0);
+  const [isLiked, setIsLiked] = useState({});
 
   const originalCards = [
     {
       imageUrl: "https://tse3.mm.bing.net/th/id/OIP.G8C65hJmA5N4UAeNTc5QZAHaF6?w=757&h=605&rs=1&pid=ImgDetMain&o=7&rm=3",
       title: "Jaya Sri Maha Bodhiya",
-      description: "Sacred Bodhi Tree",
-      distance: "2 km away"
+      region: "Anuradhapura",
+      location: "Sacred Bodhi Tree",
+      price: "€ 175",
+      badge: "Hot tour",
+      details: "From Colombo 06/05/19, 4 nights, meals, per person"
     },
     {
       imageUrl: "https://slsigiriya.com/wp-content/uploads/2021/04/Jethanaramaya-1.jpg",
       title: "Jetavanarama Stupa",
-      description: "Ancient Buddhist Monument",
-      distance: "2 km away"
+      region: "Anuradhapura",
+      location: "Ancient Buddhist Monument",
+      price: "€ 152",
+      badge: "Hot tour",
+      details: "From Colombo 06/05/19, 4 nights, meals, per person"
     },
     {
       imageUrl: "https://t3.ftcdn.net/jpg/01/63/06/94/360_F_163069411_6hVulh5BPh3sztZPzwuvQOleOfprBP98.jpg",
       title: "Ruwanweli Maha Seya",
-      description: "Great White Stupa",
-      distance: "2 km away"
+      region: "Anuradhapura",
+      location: "Great White Stupa",
+      price: "€ 220",
+      badge: "Hot tour",
+      details: "From Colombo 06/05/19, 5 nights, meals, per person"
     },
     {
       imageUrl: "https://media.istockphoto.com/id/1255135539/photo/thuparamaya-is-the-first-buddhist-temple-in-sri-lanka-tourist-destination-in-anuradhapura.jpg?s=612x612&w=0&k=20&c=w9WnVaou_mO5magU2L340aVzI2Ckrxb3pgZyCGazfyQ=",
       title: "Thuparamaya Stupa",
-      description: "First Buddhist Temple",
-      distance: "2 km away"
+      region: "Anuradhapura",
+      location: "First Buddhist Temple",
+      price: "€ 190",
+      badge: "Hot tour",
+      details: "From Colombo 06/05/19, 4 nights, meals, per person"
     },
     {
       imageUrl: "https://srilankatravelpages.com/wp-content/uploads/2021/10/kcor2ehqaiugm1f3nl8b46tpjsyd59vz.jpg",
       title: "Abhayagiri Stupa",
-      description: "Ancient Monastery",
-      distance: "2 km away"
+      region: "Anuradhapura",
+      location: "Ancient Monastery",
+      price: "€ 165",
+      badge: "Hot tour",
+      details: "From Colombo 06/05/19, 3 nights, meals, per person"
     },
     {
       imageUrl: "https://overatours.com/wp-content/uploads/2021/10/Isurumuniya-Temple-Anuradhapura-in-Sri-Lanka-768x517.jpg",
       title: "Isurumuniya",
-      description: "Rock Temple Complex",
-      distance: "2 km away"
+      region: "Anuradhapura",
+      location: "Rock Temple Complex",
+      price: "€ 180",
+      badge: "Hot tour",
+      details: "From Colombo 06/05/19, 4 nights, meals, per person"
     },
     {
       imageUrl: "https://www.tusktravel.com/blog/wp-content/uploads/2020/05/Mihintale-Sri-Lanka.jpg",
       title: "Mihinthale",
-      description: "Birthplace of Buddhism",
-      distance: "8 km away"
+      region: "Anuradhapura",
+      location: "Birthplace of Buddhism",
+      price: "€ 520",
+      badge: "Eco-resort",
+      details: "From Colombo 06/05/19, 5 nights, meals, per person"
     },
     {
       imageUrl: "https://www.historyhit.com/app/uploads/fly-images/5154826/The-Kuttam-Pokuna-Shutterstock-1576x1074.jpg",
       title: "Kuttam Pokuna",
-      description: "Twin Ponds",
-      distance: "2 km away"
+      region: "Anuradhapura",
+      location: "Twin Ponds",
+      price: "€ 145",
+      badge: "Hot tour",
+      details: "From Colombo 06/05/19, 3 nights, meals, per person"
     },
     {
       imageUrl: "https://bestofceylon.com/images/best-experiences/visit-to-anuradhapura-sacred-city/anuradhapura5.jpg",
       title: "Lovamahapaya",
-      description: "Brazen Palace",
-      distance: "2 km away"
+      region: "Anuradhapura",
+      location: "Brazen Palace",
+      price: "€ 135",
+      badge: "Hot tour",
+      details: "From Colombo 06/05/19, 4 nights, meals, per person"
     },
     {
       imageUrl: "https://live.staticflickr.com/2359/2114749917_f97cc2b420_b.jpg",
       title: "Sandakada Pahana",
-      description: "Moonstone Carvings",
-      distance: "2 km away"
+      region: "Anuradhapura",
+      location: "Moonstone Carvings",
+      price: "€ 155",
+      badge: "Hot tour",
+      details: "From Colombo 06/05/19, 4 nights, meals, per person"
     }
   ];
 
-  // Create multiple sets for seamless infinite loop
-  const cards = [
-    ...originalCards,
-    ...originalCards,
-    ...originalCards
-  ];
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(originalCards.length / itemsPerPage);
 
-  const cardWidth = 320 + 24; // w-80 (320px) + gap-6 (24px)
-  const totalWidth = originalCards.length * cardWidth;
-  const totalOriginalCards = originalCards.length;
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % totalPages);
+  };
 
-  // Handle image hover changes - pause slider when hovering
-// Handle image hover changes - pause slider when hovering
-const handleImageHoverChange = useCallback((hovering) => {
-  setIsImageHovered(hovering);
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + totalPages) % totalPages);
+  };
 
-  // Save elapsed time before changing speed
-  totalElapsedRef.current += (Date.now() - startTimeRef.current) * speed;
+  const toggleLike = (index) => {
+    setIsLiked((prev) => ({ ...prev, [index]: !prev[index] }));
+  };
 
-  if (hovering) {
-    setSpeed(0.2); // Slow down
-  } else {
-    setSpeed(1); // Resume normal speed
-  }
-
-  startTimeRef.current = Date.now();
-}, [speed]);
-
-
-
-
-  // Continuous animation function
-  const animate = useCallback(() => {
-    if (!isPlaying || isTransitioning || isImageHovered) return;
-
-    const currentTime = Date.now();
-    const currentSessionElapsed = (currentTime - startTimeRef.current) * speed;
-    const totalElapsed = totalElapsedRef.current + currentSessionElapsed;
-    
-    // Move at 50 pixels per second
-    const pixelsPerSecond = 50;
-    const newTranslateX = -(totalElapsed / 1000 * pixelsPerSecond) % totalWidth;
-    
-    setTranslateX(newTranslateX);
-    
-    // Update current index based on position
-    const position = Math.abs(newTranslateX);
-    const newIndex = Math.floor(position / cardWidth) % totalOriginalCards;
-    setCurrentIndex(prev => {
-      if (newIndex !== prev) {
-        return newIndex;
-      }
-      return prev;
-    });
-    
-    animationRef.current = requestAnimationFrame(animate);
-  }, [isPlaying, isTransitioning, isImageHovered, speed, totalWidth, cardWidth, totalOriginalCards]);
-
-  // Navigation functions
-  const nextSlide = useCallback(() => {
-    if (isTransitioning) return;
-    
-    setIsTransitioning(true);
-    setIsPlaying(false);
-    
-    const nextIndex = (currentIndex + 1) % totalOriginalCards;
-    const targetPosition = -(nextIndex * cardWidth);
-    
-    setCurrentIndex(nextIndex);
-    setTranslateX(targetPosition);
-    
-    // Reset timing when manually navigating
-    totalElapsedRef.current = Math.abs(targetPosition) / 50 * 1000;
-
-    setTimeout(() => {
-      setIsTransitioning(false);
-      setIsPlaying(true);
-      startTimeRef.current = Date.now();
-    }, 500);
-  }, [isTransitioning, currentIndex, totalOriginalCards, cardWidth]);
-
-  const prevSlide = useCallback(() => {
-    if (isTransitioning) return;
-    
-    setIsTransitioning(true);
-    setIsPlaying(false);
-    
-    const prevIndex = currentIndex === 0 ? totalOriginalCards - 1 : currentIndex - 1;
-    const targetPosition = -(prevIndex * cardWidth);
-    
-    setCurrentIndex(prevIndex);
-    setTranslateX(targetPosition);
-    
-    // Reset timing when manually navigating
-    totalElapsedRef.current = Math.abs(targetPosition) / 50 * 1000;
-
-    setTimeout(() => {
-      setIsTransitioning(false);
-      setIsPlaying(true);
-      startTimeRef.current = Date.now();
-    }, 500);
-  }, [isTransitioning, currentIndex, totalOriginalCards, cardWidth]);
-
-  const goToSlide = useCallback((index) => {
-    if (isTransitioning || index === currentIndex) return;
-    
-    setIsTransitioning(true);
-    setIsPlaying(false);
-    
-    const targetPosition = -(index * cardWidth);
-    
-    setCurrentIndex(index);
-    setTranslateX(targetPosition);
-    
-    // Reset timing when manually navigating
-    totalElapsedRef.current = Math.abs(targetPosition) / 50 * 1000;
-
-    setTimeout(() => {
-      setIsTransitioning(false);
-      setIsPlaying(true);
-      startTimeRef.current = Date.now();
-    }, 500);
-  }, [isTransitioning, currentIndex, cardWidth]);
-
-  const togglePlayPause = useCallback(() => {
-    if (isPlaying) {
-      // Save elapsed time when pausing
-      totalElapsedRef.current += (Date.now() - startTimeRef.current) * speed;
-    } else {
-      // Reset start time when resuming
-      startTimeRef.current = Date.now();
-    }
-    setIsPlaying(!isPlaying);
-  }, [isPlaying, speed]);
-
-  const changeSpeed = useCallback((newSpeed) => {
-    // Save current elapsed time
-    if (isPlaying) {
-      totalElapsedRef.current += (Date.now() - startTimeRef.current) * speed;
-    }
-    
-    setSpeed(newSpeed);
-    startTimeRef.current = Date.now();
-  }, [isPlaying, speed]);
-
-  // Animation effect with stable dependencies
-  useEffect(() => {
-    if (isPlaying && !isTransitioning && !isImageHovered) {
-      startTimeRef.current = Date.now();
-      animationRef.current = requestAnimationFrame(animate);
-    } else {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-        // Save the total elapsed time when stopping
-        if (!isTransitioning && !isImageHovered && isPlaying) {
-          totalElapsedRef.current += (Date.now() - startTimeRef.current) * speed;
-        }
-      }
-    }
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-      }
-    };
-  }, [isPlaying, isTransitioning, isImageHovered, animate, speed]);
-
-  // Initialize animation on mount
-  useEffect(() => {
-    startTimeRef.current = Date.now();
-    totalElapsedRef.current = 0;
-    
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-      }
-    };
-  }, []);
+  const visibleCards = originalCards.slice(
+    currentIndex * itemsPerPage,
+    (currentIndex + 1) * itemsPerPage
+  );
 
   return (
-    <div className="py-8 px-4 max-w-7xl mx-auto">
+    <section className="bg-[#009386] py-16">
+      <div className="px-4 max-w-7xl mx-auto ">
       {/* Header Section */}
       <div className="text-center mb-12">
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold bg-gradient-to-r from-teal-400 to-teal-600 bg-clip-text text-transparent mb-4 tracking-wide">
-          POPULAR PLACES
+        <h2 className="text-4xl md:text-5xl font-semibold text-white mb-4">
+          Compilation
         </h2>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-          Discover the ancient wonders and sacred sites of Anuradhapura - Hover to pause slider
+        <p className="text-white/90 text-base max-w-2xl mx-auto">
+          Discover the ancient wonders and sacred sites of Anuradhapura
         </p>
       </div>
 
@@ -364,73 +137,95 @@ const handleImageHoverChange = useCallback((hovering) => {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          disabled={isTransitioning}
-          className="absolute left-2 z-20 bg-teal-500/90 hover:bg-teal-600 text-white rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
-          style={{ top: '160px' }}
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-gray-100 text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
         >
           <ChevronLeft size={24} />
         </button>
         
         <button
           onClick={nextSlide}
-          disabled={isTransitioning}
-          className="absolute right-2 z-20 bg-teal-500/90 hover:bg-teal-600 text-white rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
-          style={{ top: '160px' }}
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-gray-100 text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
         >
           <ChevronRight size={24} />
         </button>
 
-        {/* Cards Container */}
-        <div className="overflow-hidden mx-12">
-          <div 
-            className="flex gap-6 pb-4 will-change-transform"
-            style={{ 
-              transform: `translateX(${translateX}px)`,
-              width: `${cards.length * cardWidth}px`
-            }}
-          >
-            {cards.map((card, index) => (
-              <div key={`${card.title}-${index}`} className="flex-shrink-0 w-80">
-                <div className="bg-white rounded-xl overflow-hidden transform">
-                  <DirectionAwareHover 
-                    imageUrl={card.imageUrl}
-                    onHoverChange={handleImageHoverChange}
-                  >
-                    <div className="space-y-2">
-                      <h3 className="font-bold text-xl text-white leading-tight">
-                        {card.title}
-                      </h3>
-                      <p className="text-sm text-gray-200 opacity-90">
-                        {card.description}
-                      </p>
-                      <div className="flex items-center gap-2 text-xs text-white/80">
-                        <MapPin size={12} />
-                        <span>{card.distance}</span>
-                      </div>
-                    </div>
-                  </DirectionAwareHover>
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
+          {visibleCards.map((card, index) => {
+            const globalIndex = currentIndex * itemsPerPage + index;
+            return (
+              <div 
+                key={globalIndex} 
+                className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
+              >
+                {/* Card Image */}
+                <div className="relative h-64 overflow-hidden">
+                  <img
+                    src={card.imageUrl}
+                    alt={card.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  
+                  {/* Top Badges */}
+                  <div className="absolute top-3 left-3 bg-gray-800/80 text-white px-3 py-1 rounded text-sm">
+                    {card.badge}
+                  </div>
+                  <div className="absolute top-3 right-3 bg-white/90 text-gray-800 px-3 py-1 rounded font-bold text-sm">
+                    {card.price}
+                  </div>
+                </div>
+
+                {/* Card Content */}
+                <div className="p-4">
+                  {/* Region Info */}
+                  <div className="flex items-center gap-1 text-xs text-gray-500 mb-2">
+                    <MapPin size={14} />
+                    <span>Region</span>
+                  </div>
+                  
+                  {/* Title */}
+                  <h3 className="text-lg font-bold text-gray-800 mb-1">
+                    {card.title}
+                  </h3>
+                  
+                  {/* Location */}
+                  <div className="flex items-center gap-1 text-sm text-gray-600 mb-3">
+                    <MapPin size={14} />
+                    <span>{card.location}</span>
+                  </div>
+
+                  {/* Details */}
+                  <p className="text-xs text-gray-500 mb-4">
+                    {card.details}
+                  </p>
+
+                  {/* Bottom Actions */}
+                  <div className="flex items-center justify-between">
+                    <button
+                      onClick={() => toggleLike(globalIndex)}
+                      className={`p-2 rounded-full transition-colors ${
+                        isLiked[globalIndex] 
+                          ? 'text-red-500 bg-red-50' 
+                          : 'text-gray-400 hover:text-red-500 hover:bg-red-50'
+                      }`}
+                    >
+                      <Heart 
+                        size={20} 
+                        fill={isLiked[globalIndex] ? 'currentColor' : 'none'} 
+                      />
+                    </button>
+                    
+                    <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-800 transition-colors">
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Dots Indicator */}
-        <div className="flex justify-center gap-2 mt-6">
-          {Array.from({ length: totalOriginalCards }, (_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              disabled={isTransitioning}
-              className={`w-2 h-2 rounded-full transition-all duration-200 hover:scale-125 disabled:cursor-not-allowed ${
-                currentIndex === index 
-                  ? 'bg-teal-500 scale-110' 
-                  : 'bg-gray-300 hover:bg-gray-400'
-              }`}
-            />
-          ))}
+            );
+          })}
         </div>
       </div>
-    </div>
+      </div>
+    </section>
   );
 }

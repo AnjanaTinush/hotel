@@ -8,7 +8,7 @@ const PopulerSection = () => {
     <section 
       id="places" 
       data-section="places" 
-      className="w-full min-h-screen bg-white py-12"
+      className="w-full min-h-screen bg-[#009386] py-12"
     >
       <div className="max-w-7xl mx-auto w-full mt-10">
         <DirectionAwareHoverDemo />

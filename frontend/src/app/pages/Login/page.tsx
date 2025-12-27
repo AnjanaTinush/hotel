@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Eye, EyeOff, Hotel, ArrowRight, Mail, Lock, CheckCircle, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, X, ArrowRight, Mail, Lock, CheckCircle, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode'; // You'll need to install this: npm install jwt-decode
+import Image from 'next/image';
+import { heroImagesArray } from '../../../../public/assets/imageUrls';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -40,7 +42,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EDF6F9] flex">
+    <div className="min-h-screen bg-black flex">
       {/* Toast Notification */}
       {toast.show && (
         <div className={`fixed top-4 right-4 z-50 flex items-center p-4 rounded-lg shadow-lg transition-all duration-300 ${
@@ -57,194 +59,120 @@ const LoginPage = () => {
         </div>
       )}
 
-      {/* Left Side - Image/Illustration */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#006D77] via-[#83C5BE] to-[#E29578] relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-20 left-20 w-40 h-40 bg-white rounded-full"></div>
-          <div className="absolute bottom-32 right-16 w-32 h-32 bg-white rounded-full"></div>
-          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-white rounded-full"></div>
-          <div className="absolute bottom-20 left-1/3 w-16 h-16 bg-white rounded-full"></div>
-        </div>
-        
-        {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center items-center text-center text-white p-12">
-          <div className="max-w-md">
-            {/* Logo */}
-            <div className="mb-8">
-              <Hotel className="h-20 w-20 mx-auto mb-4" />
-              <h1 className="text-4xl font-bold mb-2">Welcome Back</h1>
-              <p className="text-xl opacity-90">
-                Continue managing your hotel with excellence
-              </p>
-            </div>
+      {/* Left Side - Image with Overlay Text */}
+      <div className="hidden lg:flex lg:w-1/2 relative">
+        {/* Background Image */}
 
-            {/* Features Grid */}
-            <div className="bg-white bg-opacity-10 rounded-2xl p-8 backdrop-blur-sm">
-              <div className="grid grid-cols-2 gap-6 text-sm">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Hotel className="h-6 w-6" />
-                  </div>
-                  <div className="font-semibold">Room Management</div>
-                  <div className="opacity-80">Real-time availability</div>
-                </div>
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Mail className="h-6 w-6" />
-                  </div>
-                  <div className="font-semibold">Guest Services</div>
-                  <div className="opacity-80">Premium experience</div>
-                </div>
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Lock className="h-6 w-6" />
-                  </div>
-                  <div className="font-semibold">Secure System</div>
-                  <div className="opacity-80">Protected data</div>
-                </div>
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <ArrowRight className="h-6 w-6" />
-                  </div>
-                  <div className="font-semibold">Analytics</div>
-                  <div className="opacity-80">Performance insights</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Quote */}
-            <div className="mt-8 p-6 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
-              <p className="text-lg italic mb-3">
-                "Streamline your hotel operations with our comprehensive management solution"
-              </p>
-              <div className="text-sm opacity-80">
-                - HotelMaster Team
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Full-bleed image only (no overlay text) */}
+        <Image
+          src="https://i.pinimg.com/1200x/19/f9/01/19f90100271e81afe07242951b5c6e11.jpg"
+          alt="Luxury Hotel Room"
+          fill
+          className="object-cover"
+          priority
+        />
       </div>
+        
+       
+      
+    
 
       {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-black relative">
         <div className="max-w-md w-full">
-          {/* Mobile Logo */}
-          <div className="lg:hidden text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <Hotel className="h-10 w-10 text-[#006D77] mr-3" />
-              <h1 className="text-2xl font-bold text-[#006D77]">LuxeStay</h1>
-            </div>
-          </div>
-
-          {/* Back to Home Button */}
+          {/* Close Button */}
           <button
             onClick={goToHome}
-            className="mb-6 text-[#006D77] hover:text-[#83C5BE] transition-colors duration-200 flex items-center"
+            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors duration-200"
             disabled={isLoading}
           >
-            <ArrowRight className="h-4 w-4 mr-2 rotate-180" />
-            Back to Home
+            <X className="h-6 w-6" />
           </button>
 
           {/* Form Header */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              Sign In
+          <div className="mb-10">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-white mb-8 tracking-wider">
+              SIGN IN TO YOUR ACCOUNT
             </h2>
-            <p className="text-gray-600">
-              Welcome back! Please sign in to your account
-            </p>
           </div>
 
           {/* Login Form */}
           <div className="space-y-6">
+            {/* Email Address */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#006D77] focus:border-[#006D77] transition-colors duration-200"
-                  placeholder="Enter your email"
-                  required
-                  disabled={isLoading}
-                />
-                <Mail className="absolute left-3 top-3 h-6 w-6 text-gray-400" />
-              </div>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full px-6 py-4 bg-transparent border border-white text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-200 text-sm tracking-wider"
+                placeholder="EMAIL ADDRESS"
+                required
+                disabled={isLoading}
+              />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 pl-12 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#006D77] focus:border-[#006D77] transition-colors duration-200"
-                  placeholder="Enter your password"
-                  required
-                  disabled={isLoading}
-                />
-                <Lock className="absolute left-3 top-3 h-6 w-6 text-gray-400" />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-                  disabled={isLoading}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
+            {/* Password */}
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className="w-full px-6 py-4 pr-12 bg-transparent border border-white text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-200 text-sm tracking-wider"
+                placeholder="PASSWORD"
+                required
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-200"
+                disabled={isLoading}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* Remember Me & Forgot Password */}
+            <div className="flex items-center justify-between text-sm">
               <div className="flex items-center">
                 <input
                   type="checkbox"
                   id="remember"
-                  className="h-4 w-4 text-[#006D77] focus:ring-[#006D77] border-gray-300 rounded"
+                  className="h-4 w-4 bg-transparent border-white text-white focus:ring-white focus:ring-offset-black rounded"
                   disabled={isLoading}
                 />
-                <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
-                  Remember me
+                <label htmlFor="remember" className="ml-2 block text-white tracking-wide">
+                  REMEMBER ME
                 </label>
               </div>
               <a 
                 href="#" 
-                className={`text-sm text-[#006D77] hover:text-[#83C5BE] transition-colors duration-200 ${
+                className={`text-white hover:text-gray-300 transition-colors duration-200 tracking-wide ${
                   isLoading ? 'opacity-50 pointer-events-none' : ''
                 }`}
               >
-                Forgot password?
+                FORGOT PASSWORD?
               </a>
             </div>
 
+            {/* Sign In Button */}
             <button
               type="button"
               onClick={() =>{router.push('/pages/adminDashboard')}}
               disabled={isLoading}
-              className="w-full bg-[#006D77] text-white py-3 px-4 rounded-lg font-medium hover:bg-opacity-90 transition-all duration-200 flex items-center justify-center group disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-white text-black py-4 px-6 font-semibold hover:bg-gray-200 transition-all duration-200 flex items-center justify-center tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Signing In...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black mr-2"></div>
+                  SIGNING IN...
                 </>
               ) : (
-                <>
-                  Sign In
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
-                </>
+                'SIGN IN'
               )}
             </button>
           </div>
@@ -253,39 +181,39 @@ const LoginPage = () => {
           <div className="mt-8">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
+                <div className="w-full border-t border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                <span className="px-4 bg-black text-gray-400 tracking-wide">OR CONTINUE WITH</span>
               </div>
             </div>
 
             {/* Social Login */}
-            <div className="mt-6 grid grid-cols-2 gap-3">
+            <div className="mt-6 grid grid-cols-2 gap-4">
               <button 
-                className="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50"
+                className="w-full py-4 px-4 border border-white text-white text-sm font-medium hover:bg-white hover:text-black transition-all duration-200 disabled:opacity-50 tracking-widest"
                 disabled={isLoading}
               >
-                <span className="ml-2">Google</span>
+                GOOGLE
               </button>
               <button 
-                className="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50"
+                className="w-full py-4 px-4 border border-white text-white text-sm font-medium hover:bg-white hover:text-black transition-all duration-200 disabled:opacity-50 tracking-widest"
                 disabled={isLoading}
               >
-                <span className="ml-2">Twitter</span>
+                FACEBOOK
               </button>
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="mt-8 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
+          {/* Sign Up Link */}
+          <div className="mt-8 text-center text-sm text-white">
+            <span className="tracking-wide">DON'T HAVE AN ACCOUNT?{' '}</span>
             <button
               onClick={goToSignup}
-              className="text-[#006D77] hover:text-[#83C5BE] font-medium transition-colors duration-200 disabled:opacity-50"
+              className="text-white hover:text-gray-300 font-medium transition-colors duration-200 disabled:opacity-50 tracking-wide underline"
               disabled={isLoading}
             >
-              Sign up here
+              SIGN UP HERE
             </button>
           </div>
         </div>

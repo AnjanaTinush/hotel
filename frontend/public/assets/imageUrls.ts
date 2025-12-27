@@ -20,3 +20,5 @@ export const heroImagesArray = [
   // Modern Minimalist Room
   "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHJvb21zfGVufDB8fDB8fHww"
 ];
+
+export const logo = "/assets/LOGO.svg";

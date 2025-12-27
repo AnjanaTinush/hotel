@@ -133,7 +133,7 @@ const Navbar: React.FC = () => {
                     item.active
                       ? "text-teal-600 bg-teal-50 hover:bg-teal-100"
                       : "text-gray-700 hover:text-teal-600 hover:bg-gray-50"
-                  } px-4 py-2.5 rounded-lg text-sm font-${
+                  } px-4 py-2.5 rounded-lg text-lg font-${
                     item.active ? "semibold" : "medium"
                   } transition-all duration-200 cursor-pointer border-none bg-transparent`}
                 >
@@ -148,7 +148,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center space-x-3">
               <button 
                 onClick={() => handleAuthClick('login')}
-                className="text-gray-700 hover:text-teal-600 px-4 py-2 text-sm font-medium transition-colors duration-200"
+                className="text-gray-700 hover:text-teal-600 px-4 py-2 text-lg font-medium transition-colors duration-200"
               >
                 {authButtons.login.text}
               </button>

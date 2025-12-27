@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import Herosection from "./component/Herosection";
 import Navbar from "./component/Navbar";
-import Ourservices from "./component/Ourseervises";
 import PopulerSection from "./component/populersection";
 import Contactus from "./component/Contactus";
 import Explore from "./component/Explore";
 import Chatboticon from "./pages/chatbot/chatboticon";
 import Chat from "./pages/chatbot/chat";
 import { motion } from 'framer-motion';
+import InspireSection from './component/ui/InspireSection';
+import RoomsSection from './component/ui/roomsSection';
 
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -48,17 +49,20 @@ export default function Home() {
       >
         <Navbar />
         
-        {/* ✅ Apply scroll-mt-24 to prevent navbar overlap */}
         <section id="home" className="scroll-mt-24">
           <Herosection />
+        </section>
+
+        <section id="inspire" className="scroll-mt-24">
+          <InspireSection />
         </section>
 
         <section id="places" className="scroll-mt-24">
           <PopulerSection />
         </section>
 
- <section id="services" className="scroll-mt-24">
-          <Ourservices />
+        <section id="rooms" className="scroll-mt-24">
+          <RoomsSection />
         </section>
         
         <section id="explore" className="scroll-mt-24">
