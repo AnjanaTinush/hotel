@@ -120,7 +120,7 @@ export default function DirectionAwareHoverDemo() {
   );
 
   return (
-    <section className="bg-[#009386] py-16">
+    <section className="bg-[#a6eae5] py-1">
       <div className="px-4 max-w-7xl mx-auto ">
       {/* Header Section */}
       <div className="text-center mb-12">
