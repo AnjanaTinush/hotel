@@ -28,7 +28,7 @@ const RoomsSection = () => {
       dimension: "400x300 cm",
       amenity: "Shower",
       image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1474&auto=format&fit=crop",
-      imagePosition: "right"
+      imagePosition: "left"
     }
   ];
 
