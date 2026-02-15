@@ -77,7 +77,7 @@ export const authButtons: AuthButtons = {
 };
 
 export const brandInfo: BrandInfo = {
-  name: "LuxeStay",
+  name: "Anjana Guest",
   tagline: "Premium Hotels",
   logo: "Home" // This refers to the Lucide icon name
 };

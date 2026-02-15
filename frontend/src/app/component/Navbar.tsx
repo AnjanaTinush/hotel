@@ -172,7 +172,7 @@ const Navbar: React.FC = () => {
               </button>
               <button 
                 onClick={() => handleAuthClick('signup')}
-                className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white px-6 py-2.5 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5"
+                className="bg-white text-[#009b8e] px-6 py-2.5 border-2 border-[#009b8e] text-sm font-bold uppercase tracking-wider hover:opacity-90 transition-all duration-200"
               >
                 {authButtons.signup.text}
               </button>
@@ -225,7 +225,7 @@ const Navbar: React.FC = () => {
                 </button>
                 <button 
                   onClick={() => handleAuthClick('signup')}
-                  className="bg-teal-600 text-white px-6 py-3 rounded-lg text-base font-semibold shadow-md transition-all duration-100 w-full"
+                  className="bg-black text-white px-6 py-3 rounded-lg text-base font-semibold uppercase tracking-wider shadow-md transition-all duration-100 w-full"
                 >
                   {authButtons.signup.text}
                 </button>

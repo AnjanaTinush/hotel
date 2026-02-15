@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#006D77',     // Caribbean Current
+        primary: '#01a89a',     // Caribbean Current
         secondary: '#83C5BE',   // Tiffany Blue
         background: '#EDF6F9',  // Alice Blue
         accent: '#FFDDD2',      // Pale Dogwood

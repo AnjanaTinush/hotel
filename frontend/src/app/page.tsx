@@ -12,6 +12,8 @@ import { motion } from 'framer-motion';
 import InspireSection from './component/ui/InspireSection';
 import RoomsSection from './component/ui/roomsSection';
 import ReviewSection from './component/ui/reviewSection';
+import Ourstory from './component/ui/Ourstory';
+import HeroVideo from './component/ui/heroVideo';
 
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -52,6 +54,14 @@ export default function Home() {
         
         <section id="home" className="scroll-mt-24">
           <Herosection />
+        </section>
+
+        <section id="story" className="scroll-mt-24">
+          <Ourstory />
+        </section>
+
+        <section id="video" className="scroll-mt-24">
+          <HeroVideo />
         </section>
 
         <section id="inspire" className="scroll-mt-24">
