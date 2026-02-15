@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Herosection from "./component/Herosection";
 import Navbar from "./component/Navbar";
+import BlackNavbar from "./component/BlackNavbar";
 import PopulerSection from "./component/populersection";
 import Contactus from "./component/Contactus";
 import Explore from "./component/Explore";
@@ -18,6 +19,7 @@ import HeroVideo from './component/ui/heroVideo';
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
+  const [showBlackNav, setShowBlackNav] = useState(false);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -41,6 +43,23 @@ export default function Home() {
     };
   }, [isChatOpen]);
 
+  // Scroll-based navbar switching: switch at 3/4 hero section height
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroSection = document.getElementById('home');
+      if (heroSection) {
+        const heroHeight = heroSection.offsetHeight;
+        const threshold = heroHeight * 0.75; // 3/4 of hero height
+        setShowBlackNav(window.scrollY >= threshold);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Run once on mount
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="relative">
       {/* Main Content */}
@@ -50,7 +69,8 @@ export default function Home() {
           opacity: isChatOpen ? 0.5 : 1,
         }}
       >
-        <Navbar />
+        <Navbar visible={!showBlackNav} />
+        <BlackNavbar visible={showBlackNav} />
         
         <section id="home" className="scroll-mt-24">
           <Herosection />
@@ -64,13 +84,13 @@ export default function Home() {
           <HeroVideo />
         </section>
 
-        <section id="inspire" className="scroll-mt-24">
+        {/* <section id="inspire" className="scroll-mt-24">
           <InspireSection />
-        </section>
+        </section> */}
 
-        <section id="places" className="scroll-mt-24">
+        {/* <section id="places" className="scroll-mt-24">
           <PopulerSection />
-        </section>
+        </section> */}
 
         <section id="rooms" className="scroll-mt-24">
           <RoomsSection />

@@ -13,14 +13,13 @@ import {
 import LoginDrawer from './ui/LoginDrawer';
 import SignupDrawer from './ui/SignupDrawer';
 
-interface NavbarProps {
-  visible?: boolean;
+interface BlackNavbarProps {
+  visible: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
+const BlackNavbar: React.FC<BlackNavbarProps> = ({ visible }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<SectionName>("home");
-  const [scrolled, setScrolled] = useState<boolean>(false);
   const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
   const [isSignupOpen, setIsSignupOpen] = useState<boolean>(false);
 
@@ -84,12 +83,10 @@ const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
       if (currentSection !== activeSection) {
         setActiveSection(currentSection);
       }
-
-      setScrolled(window.scrollY > 0);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Run once on mount
+    handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -109,27 +106,14 @@ const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
     setIsMenuOpen(false);
   };
 
-  const handleCloseLogin = () => {
-    setIsLoginOpen(false);
-  };
-
-  const handleCloseSignup = () => {
-    setIsSignupOpen(false);
-  };
-
-  const handleSwitchToSignup = () => {
-    setIsSignupOpen(true);
-  };
-
-  const handleSwitchToLogin = () => {
-    setIsLoginOpen(true);
-  };
+  const handleCloseLogin = () => setIsLoginOpen(false);
+  const handleCloseSignup = () => setIsSignupOpen(false);
+  const handleSwitchToSignup = () => setIsSignupOpen(true);
+  const handleSwitchToLogin = () => setIsLoginOpen(true);
 
   return (
     <nav
-      className={`bg-white fixed top-0 z-50 py-3 w-full transition-all duration-500 ${
-        scrolled ? "border-b border-gray-200 shadow-sm" : ""
-      } ${
+      className={`bg-black fixed top-0 z-50 py-3 w-full transition-all duration-500 ${
         visible
           ? "translate-y-0 opacity-100"
           : "-translate-y-full opacity-0 pointer-events-none"
@@ -139,12 +123,12 @@ const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
         <div className="flex justify-between items-center h-12">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="bg-gradient-to-r from-teal-500 to-teal-600 p-2.5 rounded-xl shadow-lg">
+            <div className="bg-white/20 p-2.5 rounded-xl">
               <Home className="h-7 w-7 text-white" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-gray-800">{brandInfo.name}</h1>
-              <p className="text-xs text-gray-500 -mt-1">{brandInfo.tagline}</p>
+              <h1 className="text-xl font-bold text-white">{brandInfo.name}</h1>
+              <p className="text-xs text-gray-400 -mt-1">{brandInfo.tagline}</p>
             </div>
           </div>
 
@@ -157,8 +141,8 @@ const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
                   onClick={() => handleNavClick(item.sectionName)}
                   className={`${
                     item.active
-                      ? "text-teal-600 bg-teal-50 hover:bg-teal-100"
-                      : "text-gray-700 hover:text-teal-600 hover:bg-gray-50"
+                      ? "text-white bg-white/15"
+                      : "text-gray-300 hover:text-white hover:bg-white/10"
                   } px-4 py-2.5 rounded-lg text-lg font-${
                     item.active ? "semibold" : "medium"
                   } transition-all duration-200 cursor-pointer border-none bg-transparent`}
@@ -172,15 +156,15 @@ const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
           {/* Desktop Auth */}
           <div className="hidden lg:block">
             <div className="flex items-center space-x-3">
-              <button 
+              <button
                 onClick={() => handleAuthClick('login')}
-                className="text-gray-700 hover:text-teal-600 px-4 py-2 text-lg font-medium transition-colors duration-200"
+                className="text-gray-300 hover:text-white px-4 py-2 text-lg font-medium transition-colors duration-200"
               >
                 {authButtons.login.text}
               </button>
-              <button 
+              <button
                 onClick={() => handleAuthClick('signup')}
-               className="px-6 py-2 border-2 border-[#009b8e] text-[#009b8e] font-semibold uppercase text-sm tracking-wider hover:bg-gray-900 hover:text-white transition-all duration-300"
+                className="bg-white text-black px-6 py-2.5 text-sm font-bold uppercase tracking-wider hover:bg-gray-200 transition-all duration-200"
               >
                 {authButtons.signup.text}
               </button>
@@ -191,7 +175,7 @@ const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
           <div className="lg:hidden">
             <button
               onClick={toggleMenu}
-              className="bg-gray-50 inline-flex items-center justify-center p-2.5 rounded-xl text-gray-600 hover:text-teal-600 hover:bg-gray-100 transition-all duration-200"
+              className="bg-white/10 inline-flex items-center justify-center p-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/20 transition-all duration-200"
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? (
@@ -207,15 +191,15 @@ const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="lg:hidden">
-          <div className="px-4 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200 shadow-lg">
+          <div className="px-4 pt-2 pb-3 space-y-1 bg-black border-t border-gray-700 shadow-lg">
             {navItems.map((item: NavItem) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.sectionName)}
                 className={`${
                   item.active
-                    ? "text-teal-600 bg-teal-50"
-                    : "text-gray-700 hover:text-teal-600 hover:bg-gray-50"
+                    ? "text-white bg-white/15"
+                    : "text-gray-300 hover:text-white hover:bg-white/10"
                 } block px-4 py-3 rounded-lg text-base font-${
                   item.active ? "semibold" : "medium"
                 } transition-colors duration-200 cursor-pointer w-full text-left border-none bg-transparent`}
@@ -223,17 +207,17 @@ const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
                 {item.name}
               </button>
             ))}
-            <div className="pt-4 pb-3 border-t border-gray-200 mt-4">
+            <div className="pt-4 pb-3 border-t border-gray-700 mt-4">
               <div className="flex flex-col space-y-3 px-2">
-                <button 
+                <button
                   onClick={() => handleAuthClick('login')}
-                  className="text-gray-700 hover:text-teal-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 text-left"
+                  className="text-gray-300 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 text-left"
                 >
                   {authButtons.login.text}
                 </button>
-                <button 
+                <button
                   onClick={() => handleAuthClick('signup')}
-                  className="bg-black text-white px-6 py-3 rounded-lg text-base font-semibold uppercase tracking-wider shadow-md transition-all duration-100 w-full"
+                  className="bg-white text-black px-6 py-3 rounded-lg text-base font-semibold uppercase tracking-wider shadow-md transition-all duration-100 w-full"
                 >
                   {authButtons.signup.text}
                 </button>
@@ -260,4 +244,4 @@ const Navbar: React.FC<NavbarProps> = ({ visible = true }) => {
   );
 };
 
-export default Navbar;
+export default BlackNavbar;
